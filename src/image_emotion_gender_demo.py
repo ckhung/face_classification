@@ -1,4 +1,4 @@
-import sys
+import sys, os
 
 import cv2
 from keras.models import load_model
@@ -15,9 +15,9 @@ from utils.preprocessor import preprocess_input
 
 # parameters for loading data and images
 image_path = sys.argv[1]
-detection_model_path = '../trained_models/detection_models/haarcascade_frontalface_default.xml'
-emotion_model_path = '../trained_models/emotion_models/fer2013_mini_XCEPTION.102-0.66.hdf5'
-gender_model_path = '../trained_models/gender_models/simple_CNN.81-0.96.hdf5'
+detection_model_path = os.environ['FACE_CLASSIFICATION_PATH'] + '/trained_models/detection_models/haarcascade_frontalface_default.xml'
+emotion_model_path = os.environ['FACE_CLASSIFICATION_PATH'] + '/trained_models/emotion_models/fer2013_mini_XCEPTION.102-0.66.hdf5'
+gender_model_path = os.environ['FACE_CLASSIFICATION_PATH'] + '/trained_models/gender_models/simple_CNN.81-0.96.hdf5'
 emotion_labels = get_labels('fer2013')
 gender_labels = get_labels('imdb')
 font = cv2.FONT_HERSHEY_SIMPLEX
@@ -79,4 +79,4 @@ for face_coordinates in faces:
     draw_text(face_coordinates, rgb_image, emotion_text, color, 0, -50, 1, 2)
 
 bgr_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
-cv2.imwrite('../images/predicted_test_image.png', bgr_image)
+cv2.imwrite('output.png', bgr_image)

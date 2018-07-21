@@ -28,12 +28,12 @@ Real-time demo:
 ### Run real-time guided back-prop demo:
 > python3 image_gradcam_demo.py
 
-### Make inference on single images:
-> python3 image_emotion_gender_demo.py <image_path>
+### Make inference on a single image:
+> export FACE_CLASSIFICATION_PATH=<project_path> ; python3 image_emotion_gender_demo.py <image_path>
 
 e.g.
 
-> python3 image_emotion_gender_demo.py ../images/test_image.jpg
+> export FACE_CLASSIFICATION_PATH=/home/ckhung/face_classification ; python3 image_emotion_gender_demo.py ../images/test_image.jpg
 
 ### Running with Docker
 
