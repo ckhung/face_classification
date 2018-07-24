@@ -22,10 +22,10 @@ Real-time demo:
 
 ## Instructions
 
-### Run real-time emotion demo:
+### Run real-time emotion demo: NOT UPDATED YET, ckhung
 > python3 video_emotion_color_demo.py
 
-### Run real-time guided back-prop demo:
+### Run real-time guided back-prop demo: NOT UPDATED YET, ckhung
 > python3 image_gradcam_demo.py
 
 ### Make inference on a single image:
@@ -39,12 +39,12 @@ e.g.
 
 With a few steps one can get its own face classification and detection running. Follow the commands below:
 
-* ```docker pull ekholabs/face-classifier```
-* ```docker run -d -p 8084:8084 --name=face-classifier ekholabs/face-classifier```
-* ```curl -v -F image=@[path_to_image]  http://localhost:8084/classifyImage > image.png```
+* ```docker pull ckhung/face_classification:18A```
+* ```docker run -d --name fc -p 15984:8084 ckhung/face_classification:18A```
+* ```curl -v -F image=@/some/image.jpg http://localhost:15984/emo/label
+* ```curl -v -F image=@/some/image.jpg http://localhost:15984/emo/mark > result.png
 
-### To train previous/new models for emotion classification:
-
+### To train previous/new models for emotion classification: NOT UPDATED YET, ckhung
 
 * Download the fer2013.tar.gz file from [here](https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data)
 

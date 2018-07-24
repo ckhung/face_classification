@@ -15,16 +15,20 @@ from utils.inference import load_detection_model
 from utils.inference import load_image
 from utils.preprocessor import preprocess_input
 
-def process_image(image):
+def process_image(image, result_path):
 
     try:
+        with open('/tmp/debug.txt', "a") as debug_file:
+            print("bp B {}".format(len(image)), file=debug_file)
         # parameters for loading data and images
-        detection_model_path = './trained_models/detection_models/haarcascade_frontalface_default.xml'
-        emotion_model_path = './trained_models/emotion_models/fer2013_mini_XCEPTION.102-0.66.hdf5'
-        gender_model_path = './trained_models/gender_models/simple_CNN.81-0.96.hdf5'
+        detection_model_path = os.environ['FACE_CLASSIFICATION_PATH'] + '/trained_models/detection_models/haarcascade_frontalface_default.xml'
+        emotion_model_path = os.environ['FACE_CLASSIFICATION_PATH'] + '/trained_models/emotion_models/fer2013_mini_XCEPTION.102-0.66.hdf5'
+        gender_model_path = os.environ['FACE_CLASSIFICATION_PATH'] + '/trained_models/gender_models/simple_CNN.81-0.96.hdf5'
         emotion_labels = get_labels('fer2013')
         gender_labels = get_labels('imdb')
         font = cv2.FONT_HERSHEY_SIMPLEX
+        with open('/tmp/debug.txt', "a") as debug_file:
+            print("bp C {}".format(len(image)), file=debug_file)
 
         # hyper-parameters for bounding boxes shape
         gender_offsets = (30, 60)
@@ -32,10 +36,11 @@ def process_image(image):
         emotion_offsets = (20, 40)
         emotion_offsets = (0, 0)
 
+
         # loading models
         face_detection = load_detection_model(detection_model_path)
-        emotion_classifier = load_model(emotion_model_path, compile=False)
         gender_classifier = load_model(gender_model_path, compile=False)
+        emotion_classifier = load_model(emotion_model_path, compile=False)
 
         # getting input model shapes for inference
         emotion_target_size = emotion_classifier.input_shape[1:3]
@@ -49,7 +54,9 @@ def process_image(image):
         gray_image = cv2.cvtColor(unchanged_image, cv2.COLOR_BGR2GRAY)
 
         faces = detect_faces(face_detection, gray_image)
+        ret_array = []
         for face_coordinates in faces:
+            ret_entry = {'coord': face_coordinates.tolist() }
             x1, x2, y1, y2 = apply_offsets(face_coordinates, gender_offsets)
             rgb_face = rgb_image[y1:y2, x1:x2]
 
@@ -67,12 +74,14 @@ def process_image(image):
             gender_prediction = gender_classifier.predict(rgb_face)
             gender_label_arg = np.argmax(gender_prediction)
             gender_text = gender_labels[gender_label_arg]
+            ret_entry['gender'] = gender_text
 
             gray_face = preprocess_input(gray_face, True)
             gray_face = np.expand_dims(gray_face, 0)
             gray_face = np.expand_dims(gray_face, -1)
             emotion_label_arg = np.argmax(emotion_classifier.predict(gray_face))
             emotion_text = emotion_labels[emotion_label_arg]
+            ret_entry['emotion'] = emotion_text
 
             if gender_text == gender_labels[0]:
                 color = (0, 0, 255)
@@ -82,13 +91,10 @@ def process_image(image):
             draw_bounding_box(face_coordinates, rgb_image, color)
             draw_text(face_coordinates, rgb_image, gender_text, color, 0, -20, 1, 2)
             draw_text(face_coordinates, rgb_image, emotion_text, color, 0, -50, 1, 2)
+            ret_array.append(ret_entry)
     except Exception as err:
         logging.error('Error in emotion gender processor: "{0}"'.format(err))
 
     bgr_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
-
-    dirname = 'result'
-    if not os.path.exists(dirname):
-        os.mkdir(dirname)
-
-    cv2.imwrite(os.path.join(dirname, 'predicted_image.png'), bgr_image)
+    cv2.imwrite(result_path, bgr_image)
+    return ret_array

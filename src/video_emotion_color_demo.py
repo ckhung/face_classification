@@ -1,6 +1,6 @@
 from statistics import mode
 
-import cv2
+import cv2, os
 from keras.models import load_model
 import numpy as np
 
@@ -13,8 +13,8 @@ from utils.inference import load_detection_model
 from utils.preprocessor import preprocess_input
 
 # parameters for loading data and images
-detection_model_path = '../trained_models/detection_models/haarcascade_frontalface_default.xml'
-emotion_model_path = '../trained_models/emotion_models/fer2013_mini_XCEPTION.102-0.66.hdf5'
+detection_model_path = os.environ['FACE_CLASSIFICATION_PATH'] + '/trained_models/detection_models/haarcascade_frontalface_default.xml'
+emotion_model_path = os.environ['FACE_CLASSIFICATION_PATH'] + '/trained_models/emotion_models/fer2013_mini_XCEPTION.102-0.66.hdf5'
 emotion_labels = get_labels('fer2013')
 
 # hyper-parameters for bounding boxes shape
