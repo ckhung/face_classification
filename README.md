@@ -41,8 +41,8 @@ With a few steps one can get its own face classification and detection running. 
 
 * ```docker pull ckhung/face_classification:18A```
 * ```docker run -d --name fc -p 15984:8084 ckhung/face_classification:18A```
-* ```curl -v -F image=@/some/image.jpg http://localhost:15984/emo/label
-* ```curl -v -F image=@/some/image.jpg http://localhost:15984/emo/mark > result.png
+* ```curl -v -F image=@/some/image.jpg http://localhost:15984/emo/label```
+* ```curl -v -F image=@/some/image.jpg http://localhost:15984/emo/mark > result.png```
 
 ### To train previous/new models for emotion classification: NOT UPDATED YET, ckhung
 
