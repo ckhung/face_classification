@@ -16,5 +16,5 @@ ENV PYTHONPATH=$PYTHONPATH:$FACE_CLASSIFICATION_PATH/src
 ENV FACE_CLASSIFIER_PORT=8084
 EXPOSE $FACE_CLASSIFIER_PORT
 
-ENTRYPOINT ["python3"]
-CMD ["src/web/faces.py"]
+# http://www.johnzaccone.io/entrypoint-vs-cmd-back-to-basics/
+CMD ["python3", "src/web/faces.py"]
