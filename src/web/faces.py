@@ -12,8 +12,8 @@ def index():
 @app.route('/emo/<ret_type>', methods=['POST'])
 def upload(ret_type):
     try:
-        with open('/tmp/debug.txt', "w+") as debug_file:
-            print("bp A".format(), file=debug_file)
+        # with open('/tmp/debug.txt', "w+") as debug_file:
+        #     print("bp A".format(), file=debug_file)
         image = request.files['image'].read()
         result_path = '/tmp/result.png'
         ret_array = eg_processor.process_image(image, result_path)
