@@ -1,9 +1,10 @@
 FROM asashiho/ml-jupyter-python3
 
 #Face classificarion dependencies & web application
-RUN pip3 install flask statistics opencv-python==3.2.0.8
+RUN pip3 install flask statistics opencv-python==3.2.0.8 pydot
 
 # RUN apt update -y ; apt install -y vim-tiny geeqie
+RUN apt update -y ; apt install -y graphviz
 
 ARG WORKDIR=/fc
 

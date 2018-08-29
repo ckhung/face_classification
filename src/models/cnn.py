@@ -9,6 +9,7 @@ from keras.layers import MaxPooling2D
 from keras.layers import SeparableConv2D
 from keras import layers
 from keras.regularizers import l2
+from keras.utils.vis_utils import model_to_dot
 
 def simple_CNN(input_shape, num_classes):
 
@@ -351,3 +352,11 @@ if __name__ == "__main__":
     #model.summary()
     model = simple_CNN((48, 48, 1), num_classes)
     model.summary()
+    with open('model.svg', 'w') as F:
+        F.write(
+            model_to_dot(
+                model, show_shapes=True
+            ).create(
+                prog='dot', format='svg'
+            ).decode('utf-8')
+        )

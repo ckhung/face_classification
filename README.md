@@ -37,12 +37,24 @@ e.g.
 
 ### Running with Docker
 
-With a few steps one can get its own face classification and detection running. Follow the commands below:
+With a few steps one can get one's own face classification and detection running. Follow the commands below:
 
-* ```docker pull ckhung/face_classification:18A```
-* ```docker run -d --name fc -p 15984:8084 ckhung/face_classification:18A```
+* ```docker pull ckhung/face_classification:18D```
+* ```docker run -d --name fc -p 15984:8084 ckhung/face_classification:18D```
 * ```curl -v -F image=@/some/image.jpg http://localhost:15984/emo/label```
 * ```curl -v -F image=@/some/image.jpg http://localhost:15984/emo/mark > result.png```
+
+You can also specify a log file name:
+```docker run -d --name fc -p 15984:8084 ckhung/face_classification:18D python3 src/web/faces.py -L err.log -T 8000```
+This command asks the server to create a log file "err.log"
+so that the error messages can be seen at http://localhost:15984/log .
+This is useful for collaborating colleagues who focus
+on the UI part (developing an android app for example),
+rely on your server for emotion classification,
+and need more error message feedback.
+The -T 8000 option causes the log file to be cleared and
+restarted from fresh whenever its size grows larger than 8000 bytes.
+
 
 ### To train previous/new models for emotion classification: NOT UPDATED YET, ckhung
 
